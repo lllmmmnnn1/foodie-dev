@@ -1,0 +1,54 @@
+server:
+  port: 8088
+  tomcat:
+    uri-encoding: UTF-8
+  max-http-header-size: 80KB
+
+############################################################
+#
+# ��������Դ��Ϣ
+#
+############################################################
+spring:
+  profiles:
+    active: dev
+  datasource: # ����Դ���������
+    type: com.zaxxer.hikari.HikariDataSource          # ����Դ���ͣ�HikariCP
+    driver-class-name: com.mysql.jdbc.Driver          # mysql����
+    url: jdbc:mysql://localhost:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    username: root
+    password: 123456
+    hikari:
+      connection-timeout: 30000       # �ȴ����ӳط������ӵ����ʱ�������룩���������ʱ����û���õ���������SQLException�� Ĭ��:30��
+      minimum-idle: 5                 # ��С������
+      maximum-pool-size: 20           # ���������
+      auto-commit: true               # �Զ��ύ
+      idle-timeout: 600000            # ���ӳ�ʱ�����ʱ�������룩����ʱ���ͷţ�retired����Ĭ��:10����
+      pool-name: DateSourceHikariCP     # ���ӳ�����
+      max-lifetime: 1800000           # ���ӵ�����ʱ�������룩����ʱ����û��ʹ�����ͷţ�retired����Ĭ��:30���� 1800000ms
+      connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 512000     # �ļ��ϴ���С����Ϊ500kb
+      max-request-size: 512000  # �����С����Ϊ500kb
+
+############################################################
+#
+# mybatis ����
+#
+############################################################
+mybatis:
+  type-aliases-package: com.imooc.mapper          # ����POJO�����ڰ�·��
+
+  mapper-locations: classpath:mapper/*.xml      # mapperӳ���ļ�
+
+  ############################################################
+  #
+  # mybatis mapper ����
+  #
+  ############################################################
+  # ͨ�� Mapper ����
+mapper:
+  mappers: com.imooc.my.mapper.MyMapper
+  not-empty: false    # �ڽ������ݿ�����ĵ�ʱ���жϱ��ʽ username != null, �Ƿ�׷�� username != ''
+  identity: MYSQL
